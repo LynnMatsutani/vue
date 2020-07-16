@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import Settings from '../views/Settings.vue'
+import Custom from '../views/Custom.vue'
 
 Vue.use(VueRouter)
 
@@ -9,6 +11,15 @@ Vue.use(VueRouter)
     path: '/',
     name: 'Home',
     component: Home
+  },
+  {
+    path: '/custom',
+    name: 'Custom',
+    component: Custom
+  },  {
+    path: '/settings',
+    name: 'Settings',
+    component: Settings
   },
   {
     path: '/about',
