@@ -5,8 +5,8 @@ const gasApi = axios.create({
         'content-type': 'application/x-www-form-urlencoded'
     }
 })
-gasApi.defaults.baseURL = 'https://script.google.com/macros/s/AKfycbwP22bVhsYxWu-7UURu-DE644h5993GhflogYU7UySsPTR0qXI/exec'
-let apiToken = 'EXfQr2qWcKRRqM29Btwgqkci9RiGMP83'
+gasApi.defaults.baseURL = process.env.VUE_APP_GAS_URL
+let apiToken = process.env.VUE_APP_TOKEN
 
 gasApi.interceptors.response.use(res => {
     if (res.data.error) {
