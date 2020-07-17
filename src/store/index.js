@@ -7,6 +7,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     isEnable: false,
+    loading: false,
     alertMessage: '',
     status: 'success',
     companyList: [],
@@ -30,6 +31,12 @@ export default new Vuex.Store({
     },
     setDisable(state) {
       state.isEnable = false
+    },
+    setLoadingEnable(state) {
+      state.loading = true
+    },
+    setLoadingDisable(state) {
+      state.loading = false
     },
     setMessage(state, message) {
       state.alertMessage = message
@@ -57,6 +64,7 @@ export default new Vuex.Store({
       commit('saveNameList', res.data.data)
     },
     async storeLog({commit}, params) {
+      commit('setLoadingEnable')
       if (params.item.inout === 'out') {
         let companyName = params.item.name.split(' / ')
         params.item.company = companyName[0]
@@ -64,18 +72,26 @@ export default new Vuex.Store({
       }
       try {
         const res = await gasApi.post(params)
-        console.log(res.data.message)
         commit('setAlertMessage', res.data.message, 'success')
+        commit('setLoadingDisable')
         commit('setEnable')
       } catch(e) {
         commit('setAlertMessage', {message: e}, 'error')
+        commit('setLoadingDisable')
+        commit('setEnable')
       }
     },
     async storeCompany({commit}, params) {
+      commit('setLoadingEnable')
       try {
-        await gasApi.post(params);
+        const res = await gasApi.post(params);
+        commit('setAlertMessage', res.data.message, 'success')
+        commit('setLoadingDisable')
+        commit('setEnable')
       } catch(e) {
         commit('setAlertMessage', {message: e}, 'error')
+        commit('setLoadingDisable')
+        commit('setEnable')
       }
     },
     clearForm({commit}) {
