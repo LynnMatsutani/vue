@@ -28,7 +28,7 @@
         <router-view></router-view>
       </v-container>
     </v-main>
-    <v-snackbar
+    <!-- <v-snackbar
       v-model="snackbarVisible"
       :bottom="y === 'bottom'"
       :color="status"
@@ -36,7 +36,7 @@
       :multi-line="mode === 'multi-line'"
       timeout="2000"
       :top="y === 'top'"
-      :vertical="mode === 'vertical'">{{ alertMessage }}</v-snackbar>
+      :vertical="mode === 'vertical'">{{ alertMessage }}</v-snackbar> -->
   </v-app>
 </template>
 

@@ -9,11 +9,15 @@ export default new Vuex.Store({
     isEnable: false,
     alertMessage: '',
     status: 'success',
-    companyList: []
+    companyList: [],
+    nameList: []
   },
   mutations: {
     saveCompanyList(state, companyList) {
       state.companyList = companyList
+    },
+    saveNameList(state, nameList) {
+      state.nameList = nameList
     },
     setAlertMessage(state, message, status = null) {
       state.alertMessage = message
@@ -48,11 +52,18 @@ export default new Vuex.Store({
         commit('setAlertMessage', {message: e}, 'error')
       }
     },
+    async getName({commit}) {
+      const res = await gasApi.getNames({date:new Date()})
+      commit('saveNameList', res.data.data)
+    },
     async storeLog({commit}, params) {
-      console.log(params)
+      if (params.item.inout === 'out') {
+        let companyName = params.item.name.split(' / ')
+        params.item.company = companyName[0]
+        params.item.name = companyName[1]
+      }
       try {
-        const res = await gasApi.post(params);
-        console.log(res.data.message)
+        const res = await gasApi.post(params)
         commit('setAlertMessage', res.data.message, 'success')
       } catch(e) {
         commit('setAlertMessage', {message: e}, 'error')
@@ -62,7 +73,7 @@ export default new Vuex.Store({
       try {
         await gasApi.post(params);
       } catch(e) {
-        commit('setErrorMessage', {message: e}, 'error')
+        commit('setAlertMessage', {message: e}, 'error')
       }
     },
     clearForm({commit}) {
@@ -81,6 +92,9 @@ export default new Vuex.Store({
   getters: {
     getCompanyList(state) {
       return state.companyList
+    },
+    getNameList(state) {
+      return state.nameList
     },
     status: state => {
       return state.isEnable

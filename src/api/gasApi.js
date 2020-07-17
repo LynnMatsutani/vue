@@ -9,8 +9,8 @@ gasApi.defaults.baseURL = 'https://script.google.com/macros/s/AKfycbwP22bVhsYxWu
 let apiToken = 'EXfQr2qWcKRRqM29Btwgqkci9RiGMP83'
 
 gasApi.interceptors.response.use(res => {
-    if (res.data.status === 'error') {
-        return Promise.reject(res.data.status)
+    if (res.data.error) {
+        return Promise.reject(res.data.error)
     }
     return Promise.resolve(res)
 }, err => {
@@ -33,7 +33,16 @@ const get = function(){
     })
 }
 
+const getNames = item => {
+    return gasApi.post('', {
+        method: 'GET',
+        token: apiToken,
+        item
+    })
+}
+
 export default {
     post,
-    get
+    get,
+    getNames
 }

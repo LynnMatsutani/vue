@@ -13,13 +13,15 @@
             <v-form>
               <v-text-field
                 label="会社名"
+                v-model="company_name"
                 name="company_name"
                 required></v-text-field>
             </v-form>
             <v-btn
               dark
               block
-              color="primary">
+              color="primary"
+              @click="onClickSubmit()">
               登録
             </v-btn>
           </v-card-text>
@@ -32,5 +34,21 @@
 <script>
 export default {
   name: 'Settings',
+  data() {
+    return {
+      company_name: ''
+    }
+  },
+  methods: {
+    onClickSubmit() {
+      this.$store.dispatch('storeCompany', {
+        item: {
+          company_name: this.company_name
+        }
+      })
+
+      this.company_name = ''
+    },
+  }
 }
 </script>

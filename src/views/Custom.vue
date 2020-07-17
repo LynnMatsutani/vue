@@ -39,9 +39,13 @@
               <v-select
                 v-model="company"
                 label="会社名"
-                :items="companyList"
+                :items="getCompanyList"
                 name="company"
+                v-if="getCompanyList.length > 0"
               ></v-select>
+              <v-layout justify-center v-else>
+                <v-progress-circular indeterminate></v-progress-circular>
+              </v-layout>
               <v-text-field
                 label="利用者氏名"
                 name="name"
@@ -83,21 +87,34 @@ export default {
       outHourRange: [11,12,13,14,15,16,17,18,19,20],
       intime: '',
       outtime: '',
-      companyList: this.$store.state.companyList,
+      companyList: [],
       company: '',
       name: '',
       format: 'HH:mm',
       minInterval: 5,
-      loading: this.$state.loading
     }
   },
-  mounted() {
+  computed: {
+    getCompanyList() {
+      return this.$store.getters.getCompanyList
+    },
+  },
+  created() {
     this.$store.dispatch('getCompany')
-    this.companyList = this.$store.state.companyList
+    this.companyList = this.$store.getters.getCompanyList
+
+    this.$store.dispatch('getName')
+    this.nameList = this.$store.getters.nameList
   },
   methods: {
     onClickSubmit() {
-      this.$refs.confirmModal.open(this.corporation, this.name,{'date':this.date, 'intime':this.intime, 'outtime':this.outtime})
+      this.$refs.confirmModal.open(null, this.company, this.name,{'date':this.date, 'intime':this.intime, 'outtime':this.outtime})
+    },
+    clearForm() {
+      this.company = ''
+      this.name = ''
+      this.intime = ''
+      this.outtime = ''
     }
   }
 }

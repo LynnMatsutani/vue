@@ -72,20 +72,49 @@ export default {
             this.show = false
         },
         onClickSubmit() {
-            let today = new Date()
-            let month = today.getMonth()+1
-            this.$store.dispatch('storeLog', {
-                item: {
+            let item
+            if (this.customTime) {
+                let date = new Date(this.customTime.date)
+                let month = date.getMonth()+1
+                month = this.zeroPadding(month)
+                let day = this.zeroPadding(date.getDate())
+
+                item = {
+                    company: this.company,
+                    name: this.name,
+                    date: date.getFullYear()+'/'+month+'/'+day,
+                    intime: this.customTime.intime,
+                    outtime: this.customTime.outtime
+                }
+            } else {
+                let today = new Date()
+                let month = today.getMonth()+1
+                month = this.zeroPadding(month)
+                let day = this.zeroPadding(today.getDate())
+
+                let hour = this.zeroPadding(today.getHours())
+                let minute = this.zeroPadding(today.getMinutes())
+                item = {
                     inout: this.inout,
                     company: this.company,
                     name: this.name,
-                    date: today.getFullYear()+'/'+month+'/'+today.getDate(),
-                    time: today.getHours()+':'+today.getMinutes()
+                    date: today.getFullYear()+'/'+month+'/'+day,
+                    time: hour+':'+minute
                 }
+            }
+
+            this.$store.dispatch('storeLog', {
+                item: item
             })
             this.$emit('clearForm')
-            this.$store.dispatch('snackOn')
             this.show = false
+        },
+        zeroPadding(num) {
+            num += ''
+            if (num.length === 1) {
+                num = '0' + num
+            }
+            return num
         }
     }
 }
