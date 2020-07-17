@@ -10,17 +10,38 @@
       <v-toolbar-title>入退室管理</v-toolbar-title>
       <v-spacer></v-spacer>
       <!-- Home -->
-      <v-btn icon to="/">
-        <v-icon>mdi-file-table-outline</v-icon>
-      </v-btn>
+      <v-tooltip bottom>
+        <template v-slot:activator="{on, attrs}">
+          <v-btn icon to="/"
+            v-bind="attrs"
+            v-on="on">
+            <v-icon>mdi-file-table-outline</v-icon>
+          </v-btn>
+        </template>
+        <span>入退室の登録はこちら</span>
+      </v-tooltip>
       <!-- Custom -->
-      <v-btn icon to="/custom">
-        <v-icon>mdi-pencil-outline</v-icon>
-      </v-btn>
+      <v-tooltip bottom>
+        <template v-slot:activator="{on, attrs}">
+          <v-btn icon to="/custom"
+            v-bind="attrs"
+            v-on="on">
+            <v-icon>mdi-pencil-outline</v-icon>
+          </v-btn>
+        </template>
+        <span>日時を入力して登録する場合はこちら</span>
+      </v-tooltip>
       <!-- Settings -->
-      <v-btn icon to="/settings">
-        <v-icon>mdi-cog</v-icon>
-      </v-btn>
+      <v-tooltip bottom>
+        <template v-slot:activator="{on, attrs}">
+          <v-btn icon to="/settings"
+            v-bind="attrs"
+            v-on="on">
+            <v-icon>mdi-cog</v-icon>
+          </v-btn>
+        </template>
+        <span>会社名リストへの登録はこちら</span>
+      </v-tooltip>
     </v-app-bar>
     <!-- メインコンテンツ -->
     <v-main>
