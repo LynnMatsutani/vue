@@ -28,7 +28,7 @@
         <router-view></router-view>
       </v-container>
     </v-main>
-    <!-- <v-snackbar
+    <v-snackbar
       v-model="snackbarVisible"
       :bottom="y === 'bottom'"
       :color="status"
@@ -36,7 +36,7 @@
       :multi-line="mode === 'multi-line'"
       timeout="2000"
       :top="y === 'top'"
-      :vertical="mode === 'vertical'">{{ alertMessage }}</v-snackbar> -->
+      :vertical="mode === 'vertical'">{{ getAlertMessage }}</v-snackbar>
   </v-app>
 </template>
 
@@ -51,7 +51,7 @@ export default {
       y: 'top',
       mode: null,
       alertMessage: this.$store.state.alertMessage,
-      status: this.$store.state.status
+      status: this.$store.state.status,
     }
   },
   computed: {
@@ -62,6 +62,9 @@ export default {
       set() {
         return this.$store.dispatch('snackOff')
       }
+    },
+    getAlertMessage() {
+      return this.$store.state.alertMessage
     }
   },
 };

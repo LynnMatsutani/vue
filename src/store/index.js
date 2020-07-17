@@ -64,7 +64,9 @@ export default new Vuex.Store({
       }
       try {
         const res = await gasApi.post(params)
+        console.log(res.data.message)
         commit('setAlertMessage', res.data.message, 'success')
+        commit('setEnable')
       } catch(e) {
         commit('setAlertMessage', {message: e}, 'error')
       }
