@@ -13,7 +13,7 @@
             <v-form>
               <v-text-field
                 label="会社名"
-                name="corporate_name"
+                name="company_name"
                 required></v-text-field>
             </v-form>
             <v-btn

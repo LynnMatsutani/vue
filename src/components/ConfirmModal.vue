@@ -9,7 +9,11 @@
                 <v-card-text class="black--text">
                     <v-list-item>
                         <v-list-item-content>
-                            <v-list-item-title>会社名: {{corporation}}</v-list-item-title>
+                            <v-list-item-title v-if="inout">
+                                <span v-if="inout == 'in'">入室</span>
+                                <span v-else>退室</span>
+                            </v-list-item-title>
+                            <v-list-item-title>会社名: {{company}}</v-list-item-title>
                             <v-list-item-title>名前: {{name}}</v-list-item-title>
                             <v-list-item-title v-if="customTime">利用時間: {{customTime.intime}}〜{{customTime.outtime}}</v-list-item-title>
                         </v-list-item-content>
@@ -39,6 +43,7 @@
 </template>
 
 <script>
+
 export default {
     name: 'ConfirmModal',
 
@@ -46,16 +51,18 @@ export default {
         return {
             show: false,
             loading: false,
-            corporation: '',
+            inout: '',
+            company: '',
             name: '',
             customTime: []
         }
     },
 
     methods: {
-        open(corporation, name, customTime = null) {
+        open(inout, company, name, customTime = null) {
             this.show = true
-            this.corporation = corporation
+            this.inout = inout
+            this.company = company
             this.name = name
             if (customTime !== undefined) {
                 this.customTime = customTime
@@ -65,7 +72,20 @@ export default {
             this.show = false
         },
         onClickSubmit() {
-
+            let today = new Date()
+            let month = today.getMonth()+1
+            this.$store.dispatch('storeLog', {
+                item: {
+                    inout: this.inout,
+                    company: this.company,
+                    name: this.name,
+                    date: today.getFullYear()+'/'+month+'/'+today.getDate(),
+                    time: today.getHours()+':'+today.getMinutes()
+                }
+            })
+            this.$emit('clearForm')
+            this.$store.dispatch('snackOn')
+            this.show = false
         }
     }
 }

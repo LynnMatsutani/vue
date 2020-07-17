@@ -37,10 +37,10 @@
                 minute-label="分"
                 v-model="outtime"></vue-timepicker>
               <v-select
-                v-model="corporation"
+                v-model="company"
                 label="会社名"
-                :items="corporations"
-                name="corporation"
+                :items="companyList"
+                name="company"
               ></v-select>
               <v-text-field
                 label="利用者氏名"
@@ -83,17 +83,18 @@ export default {
       outHourRange: [11,12,13,14,15,16,17,18,19,20],
       intime: '',
       outtime: '',
-      corporations: [
-        'canvas',
-        'nathos'
-      ],//dummy
-      corporation: '',
+      companyList: this.$store.state.companyList,
+      company: '',
       name: '',
       format: 'HH:mm',
       minInterval: 5,
+      loading: this.$state.loading
     }
   },
-
+  mounted() {
+    this.$store.dispatch('getCompany')
+    this.companyList = this.$store.state.companyList
+  },
   methods: {
     onClickSubmit() {
       this.$refs.confirmModal.open(this.corporation, this.name,{'date':this.date, 'intime':this.intime, 'outtime':this.outtime})

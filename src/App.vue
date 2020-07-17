@@ -28,11 +28,41 @@
         <router-view></router-view>
       </v-container>
     </v-main>
+    <v-snackbar
+      v-model="snackbarVisible"
+      :bottom="y === 'bottom'"
+      :color="status"
+      :left="x === 'left'"
+      :multi-line="mode === 'multi-line'"
+      timeout="2000"
+      :top="y === 'top'"
+      :vertical="mode === 'vertical'">{{ alertMessage }}</v-snackbar>
   </v-app>
 </template>
 
 <script>
+
 export default {
   name: 'App',
+  data() {
+    return {
+      snackbar: false,
+      x: null,
+      y: 'top',
+      mode: null,
+      alertMessage: this.$store.state.alertMessage,
+      status: this.$store.state.status
+    }
+  },
+  computed: {
+    snackbarVisible: {
+      get() {
+        return this.$store.state.isEnable
+      },
+      set() {
+        return this.$store.dispatch('snackOff')
+      }
+    }
+  },
 };
 </script>

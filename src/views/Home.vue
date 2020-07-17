@@ -23,11 +23,15 @@
                   value="out"></v-radio>
               </v-radio-group>
               <v-select
-                v-model="corporation"
+                v-model="company"
                 label="会社名"
-                :items="corporations"
-                name="corporation"
+                :items="getCompanyList"
+                name="company"
+                v-if="getCompanyList.length > 0"
               ></v-select>
+              <v-layout justify-center v-else>
+                <v-progress-circular indeterminate></v-progress-circular>
+              </v-layout>
               <v-text-field
                 label="利用者氏名"
                 name="name"
@@ -50,7 +54,7 @@
             </v-btn>
           </v-card-text>
         </v-card>
-        <ConfirmModal ref="confirmModal"/>
+        <ConfirmModal ref="confirmModal" @clearForm="clearForm"/>
       </v-col>
     </v-row>
   </div>
@@ -64,25 +68,37 @@ export default {
   components: {
     ConfirmModal
   },
-  data() {
-    return {
-      item: [
-        this.corporation,
-        this.name
-      ],
-      inout: 'in',
-      corporation: '',
-      corporations: [
-        'canvas',
-        'nathos'
-      ],//dummy
-      name: '',
+  props: {
+    props_companyList: {
+      type: Array,
+      default: () => {}
     }
   },
-
+  data() {
+    return {
+      inout: 'in',
+      company: '',
+      names: [],
+      name: '',
+      companyList: []
+    }
+  },
+  computed: {
+    getCompanyList() {
+      return this.$store.getters.getCompanyList
+    },
+  },
+  created() {
+    this.$store.dispatch('getCompany')
+    this.companyList = this.$store.getters.getCompanyList
+  },
   methods: {
     onClickSubmit() {
-      this.$refs.confirmModal.open(this.corporation, this.name)
+      this.$refs.confirmModal.open(this.inout, this.company, this.name)
+    },
+    clearForm() {
+      this.company = ''
+      this.name = ''
     }
   }
 }
