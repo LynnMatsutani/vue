@@ -61,6 +61,9 @@ export default new Vuex.Store({
     },
     async getName({commit}) {
       const res = await gasApi.getNames({date:new Date()})
+      if (res.data.data.length == 0) {
+        res.data.data = ['入室データがありません']
+      }
       commit('saveNameList', res.data.data)
     },
     async storeLog({commit}, params) {
